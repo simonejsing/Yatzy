@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Yatzy/Yatzy/bin/Debug
+/Yatzy/Yatzy/.vs/Yatzy/v14
+/Yatzy/Yatzy/obj/Debug
