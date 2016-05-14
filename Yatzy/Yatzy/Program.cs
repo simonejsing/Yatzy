@@ -10,6 +10,7 @@ namespace Yatzy
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
