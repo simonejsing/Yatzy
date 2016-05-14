@@ -1,0 +1,2 @@
+# Yatzy
+Yatzy bot
