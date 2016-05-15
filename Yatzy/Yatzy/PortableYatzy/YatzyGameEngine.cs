@@ -15,6 +15,8 @@ namespace Yatzy
         private Roll _currentRoll = null;
         private int _rerollCount;
 
+        public ScoreCard ScoreCard => new ScoreCard(_scoreCard);
+
         public static YatzyGameEngine GetInstance(IDiceRoller diceRoller, IObjective[] objectives)
         {
             return new YatzyGameEngine(diceRoller, objectives);
@@ -82,6 +84,8 @@ namespace Yatzy
         {
             if(_currentRoll == null)
                 throw new InvalidOperationException("Cannot score before dice have been rolled.");
+            if(objectiveIndex < 0 || objectiveIndex >= _objectives.Length)
+                throw new InvalidOperationException("Invalid objective selected.");
 
             var score = _scoreCard.Score(objectiveIndex, _currentRoll);
 

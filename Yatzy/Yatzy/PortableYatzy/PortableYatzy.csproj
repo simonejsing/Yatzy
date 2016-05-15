@@ -42,6 +42,7 @@
     <Compile Include="DefaultObjectives.cs" />
     <Compile Include="IDiceRoller.cs" />
     <Compile Include="IObjective.cs" />
+    <Compile Include="IPassiveObjective.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomDieRoller.cs" />
     <Compile Include="Roll.cs" />

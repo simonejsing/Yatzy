@@ -158,6 +158,18 @@ namespace Yatzy.UnitTests
         }
 
         [TestMethod]
+        public void YatzyGameEngineCannotScoreObjectiveOutOfList()
+        {
+            byte[] expectedDieValue = { 1, 2, 3, 4, 5, 6 };
+
+            var game = CreateDefaultInstance(expectedDieValue);
+            game.RollDice();
+            Action action = () => game.Score(-1);
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [TestMethod]
         public void YatzyGameEngineCannotRerollBeforeDiceHaveBeenRolled()
         {
             byte[] expectedDieValue = { 1, 2, 3, 4, 5, 6 };

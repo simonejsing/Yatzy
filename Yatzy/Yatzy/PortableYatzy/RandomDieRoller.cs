@@ -13,8 +13,8 @@ namespace Yatzy
 
         public RandomDieRoller()
         {
-            //_random = new Random();
-            _random = new Random(Seed);
+            _random = new Random();
+            //_random = new Random(Seed);
             _buffer = new byte[BufferSize];
 
             ResetBuffer();

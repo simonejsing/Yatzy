@@ -17,34 +17,55 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <TextBox x:Name="firstDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-            <CheckBox x:Name="holdFirstDie" Content="Hold" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <TextBlock x:Name="firstDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind ViewModel.CurrentRoll.Dice1, Mode=OneWay}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdFirstDie" Content="Hold" HorizontalAlignment="Center" VerticalAlignment="Top" IsChecked="{x:Bind ViewModel.HoldDie1, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Column="1">
-            <TextBox x:Name="secondDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-            <CheckBox x:Name="holdSecondDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock x:Name="secondDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind ViewModel.CurrentRoll.Dice2, Mode=OneWay}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdSecondDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{x:Bind ViewModel.HoldDie2, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Column="2">
-            <TextBox x:Name="thirdDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-            <CheckBox x:Name="holdThirdDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="2" Grid.Row="0">
+            <TextBlock x:Name="thirdDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind ViewModel.CurrentRoll.Dice3, Mode=OneWay}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdThirdDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{x:Bind ViewModel.HoldDie3, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Column="3">
-            <TextBox x:Name="fourthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-            <CheckBox x:Name="holdFourthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="3" Grid.Row="0">
+            <TextBlock x:Name="fourthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind ViewModel.CurrentRoll.Dice4, Mode=OneWay}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdFourthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{x:Bind ViewModel.HoldDie4, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Column="4">
-            <TextBox x:Name="fifthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-            <CheckBox x:Name="holdFifthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="4" Grid.Row="0">
+            <TextBlock x:Name="fifthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind ViewModel.CurrentRoll.Dice5, Mode=OneWay}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdFifthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{x:Bind ViewModel.HoldDie5, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Column="5">
-            <TextBox x:Name="sixthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-            <CheckBox x:Name="holdSixthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="5" Grid.Row="0">
+            <TextBlock x:Name="sixthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind ViewModel.CurrentRoll.Dice6, Mode=OneWay}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdSixthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{x:Bind ViewModel.HoldDie6, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Column="6">
+        <StackPanel Grid.Column="6" Grid.Row="0">
             <Button x:Name="rollDice" Content="Roll" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="RollDice_OnClick" />
-            <Button x:Name="rerollDice" Content="Reroll" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Button x:Name="scoreRoll" Content="Score" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button x:Name="rerollDice" Content="Reroll" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="RerollDice_OnClick"/>
+            <Button x:Name="scoreRoll" Content="Score" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ScoreRoll_OnClick"/>
         </StackPanel>
+        <ScrollViewer Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ListView x:Name="ObjectiveList" Grid.Column="0" Grid.Row="0" ItemsSource="{x:Bind ViewModel.ObjectiveNames}" />
+                <ListView x:Name="PotentialScoreList" Grid.Column="1" Grid.Row="0" ItemsSource="{x:Bind ViewModel.PotentialScores, Mode=OneWay}" />
+                <ListView x:Name="ScoreList" Grid.Column="2" Grid.Row="0" ItemsSource="{x:Bind ViewModel.ObjectiveScores, Mode=OneWay}" />
+            </Grid>
+        </ScrollViewer>
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="2" Text="{x:Bind ViewModel.TotalScore, Mode=OneWay}"/>
     </Grid>
 </Page>

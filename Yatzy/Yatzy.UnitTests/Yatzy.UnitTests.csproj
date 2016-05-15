@@ -66,6 +66,7 @@
     <Compile Include="MockDiceRoller.cs" />
     <Compile Include="MockObjective.cs" />
     <Compile Include="ObjectiveTests.cs" />
+    <Compile Include="ScoreCardTests.cs" />
     <Compile Include="YatzyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
