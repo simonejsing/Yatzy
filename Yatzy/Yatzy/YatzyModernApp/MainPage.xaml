@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="YatzyModernApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YatzyModernApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBox x:Name="firstDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdFirstDie" Content="Hold" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <TextBox x:Name="secondDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdSecondDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+            <TextBox x:Name="thirdDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdThirdDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3">
+            <TextBox x:Name="fourthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdFourthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Column="4">
+            <TextBox x:Name="fifthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdFifthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Column="5">
+            <TextBox x:Name="sixthDieEyes" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+            <CheckBox x:Name="holdSixthDie" Content="Hold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Column="6">
+            <Button x:Name="rollDice" Content="Roll" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="RollDice_OnClick" />
+            <Button x:Name="rerollDice" Content="Reroll" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button x:Name="scoreRoll" Content="Score" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </StackPanel>
+    </Grid>
+</Page>
