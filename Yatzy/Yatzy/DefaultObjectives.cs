@@ -9,20 +9,20 @@ namespace Yatzy
 
         public IObjective[] Objectives { get; private set; }
 
-        public static IObjective Ones => new EyeObjective(1);
-        public static IObjective Twos => new EyeObjective(2);
-        public static IObjective Threes => new EyeObjective(3);
-        public static IObjective Fours => new EyeObjective(4);
-        public static IObjective Fives => new EyeObjective(5);
-        public static IObjective Sixes => new EyeObjective(6);
-        public static IObjective Pair => new OfAKindObjective(2);
+        public static IObjective Ones => new EyeObjective("Ones", 1);
+        public static IObjective Twos => new EyeObjective("Twos", 2);
+        public static IObjective Threes => new EyeObjective("Threes", 3);
+        public static IObjective Fours => new EyeObjective("Fours", 4);
+        public static IObjective Fives => new EyeObjective("Fives", 5);
+        public static IObjective Sixes => new EyeObjective("Sixes", 6);
+        public static IObjective Pair => new OfAKindObjective("Pair", 2);
         public static IObjective TwoPairs => new TwoPairsObjective();
         public static IObjective ThreePairs => new ThreePairsObjective();
-        public static IObjective ThreeOfAKind => new OfAKindObjective(3);
-        public static IObjective FourOfAKind => new OfAKindObjective(4);
+        public static IObjective ThreeOfAKind => new OfAKindObjective("Three of a kind", 3);
+        public static IObjective FourOfAKind => new OfAKindObjective("Four of a kind", 4);
         public static IObjective TwoTriplets => new TwoTripletsObjective();
-        public static IObjective LowerStraight => new StraightObjective(new byte[] { 1, 2, 3, 4, 5 });
-        public static IObjective HigherStraight => new StraightObjective(new byte[] { 2, 3, 4, 5, 6 });
+        public static IObjective LowerStraight => new StraightObjective("Lower straight", new byte[] { 1, 2, 3, 4, 5 });
+        public static IObjective HigherStraight => new StraightObjective("Higher straight", new byte[] { 2, 3, 4, 5, 6 });
         public static IObjective RoyalStraight => new RoyalStraightObjective();
 
         public static IObjective FullHouse => new FullHouseObjective();
@@ -42,6 +42,7 @@ namespace Yatzy
                 Sixes,
                 Pair,
                 TwoPairs,
+                ThreePairs,
                 ThreeOfAKind,
                 FourOfAKind,
                 TwoTriplets,
@@ -58,8 +59,11 @@ namespace Yatzy
         {
             private readonly int _dice;
 
-            public EyeObjective(int dice)
+            public string Identifier { get; }
+
+            public EyeObjective(string identifier, int dice)
             {
+                Identifier = identifier;
                 _dice = dice;
             }
 
@@ -83,8 +87,11 @@ namespace Yatzy
         {
             private readonly int _numberOfDice;
 
-            internal OfAKindObjective(int numberOfDice)
+            public string Identifier { get; }
+
+            internal OfAKindObjective(string identifier, int numberOfDice)
             {
+                Identifier = identifier;
                 _numberOfDice = numberOfDice;
             }
 
@@ -96,6 +103,8 @@ namespace Yatzy
 
         private class TwoPairsObjective : IObjective
         {
+            public string Identifier => "Two pairs";
+
             public int Score(Roll roll)
             {
                 // Find the first maximum pair
@@ -121,6 +130,8 @@ namespace Yatzy
 
         private class ThreePairsObjective : IObjective
         {
+            public string Identifier => "Three pairs";
+
             public int Score(Roll roll)
             {
                 // Find the first maximum pair
@@ -156,6 +167,8 @@ namespace Yatzy
 
         private class TwoTripletsObjective : IObjective
         {
+            public string Identifier => "Two triplets";
+
             public int Score(Roll roll)
             {
                 var firstTriplet = MaximumOfAKind(roll.Dice, 3);
@@ -181,8 +194,11 @@ namespace Yatzy
         {
             private readonly byte[] _dice;
 
-            public StraightObjective(byte[] dice)
+            public string Identifier { get; }
+
+            public StraightObjective(string identifier, byte[] dice)
             {
+                Identifier = identifier;
                 _dice = dice;
             }
 
@@ -194,7 +210,7 @@ namespace Yatzy
 
         private class RoyalStraightObjective : StraightObjective
         {
-            public RoyalStraightObjective() : base(new byte[] { 1, 2, 3, 4, 5, 6 })
+            public RoyalStraightObjective() : base("Royal straight", new byte[] { 1, 2, 3, 4, 5, 6 })
             {
             }
 
@@ -206,6 +222,8 @@ namespace Yatzy
 
         private class FullHouseObjective : IObjective
         {
+            public string Identifier => "Full house";
+
             public int Score(Roll roll)
             {
                 var firstTriplet = MaximumOfAKind(roll.Dice, 3);
@@ -229,6 +247,8 @@ namespace Yatzy
 
         private class ChanceObjective : IObjective
         {
+            public string Identifier => "Chance";
+
             public int Score(Roll roll)
             {
                 return roll.Dice.Sum(d => d);
@@ -237,7 +257,7 @@ namespace Yatzy
 
         private class YatzyObjective : OfAKindObjective
         {
-            public YatzyObjective() : base(6)
+            public YatzyObjective() : base("Yatzy", 6)
             {
             }
 

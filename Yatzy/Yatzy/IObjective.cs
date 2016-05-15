@@ -8,6 +8,8 @@ namespace Yatzy
 {
     public interface IObjective
     {
+        string Identifier { get; }
+
         int Score(Roll roll);
     }
 }

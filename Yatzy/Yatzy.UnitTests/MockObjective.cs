@@ -6,6 +6,8 @@ namespace Yatzy.UnitTests
     {
         private readonly Func<Roll, int> _scoringFunc;
 
+        public string Identifier => "Mock";
+
         public MockObjective(Func<Roll, int> scoringFunc)
         {
             _scoringFunc = scoringFunc;
