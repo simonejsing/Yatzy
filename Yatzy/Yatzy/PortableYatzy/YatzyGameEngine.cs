@@ -44,6 +44,9 @@ namespace Yatzy
 
         public Roll RollDice()
         {
+            if(_currentRoll != null)
+                throw new InvalidOperationException("Must score current roll before rolling again.");
+
             var roll = new byte[6];
             _rerollCount = 0;
 

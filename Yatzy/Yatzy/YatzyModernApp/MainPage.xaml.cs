@@ -23,7 +23,8 @@ namespace YatzyModernApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private YatzyGameEngine game;
+        private readonly YatzyGameEngine game;
+        private Roll currentRoll;
 
         public MainPage()
         {
@@ -34,7 +35,7 @@ namespace YatzyModernApp
 
         private void RollDice_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            currentRoll = game.RollDice();
         }
     }
 }

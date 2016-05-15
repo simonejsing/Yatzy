@@ -38,6 +38,29 @@ namespace Yatzy.UnitTests
         }
 
         [TestMethod]
+        public void MustScoreCurrentRollBeforeRollingAgain()
+        {
+            byte[] expectedDieValue = { 1, 2, 3, 4, 5, 6 };
+
+            var game = CreateDefaultInstance(expectedDieValue);
+            game.RollDice();
+            Action action = () => game.RollDice();
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [TestMethod]
+        public void CanRollAgainAfterScoring()
+        {
+            byte[] expectedDieValue = { 1, 2, 3, 4, 5, 6 };
+
+            var game = CreateDefaultInstance(expectedDieValue);
+            game.RollDice();
+            game.Score(0);
+            game.RollDice();
+        }
+
+        [TestMethod]
         public void YatzyGameEngineCanRollDice()
         {
             byte[] expectedDieValue = { 1,2,3,4,5,6 };
@@ -127,6 +150,7 @@ namespace Yatzy.UnitTests
             game.RollDice();
             game.Reroll();
             game.Reroll();
+            game.Score(0);
 
             game.RollDice();
             game.Reroll();
