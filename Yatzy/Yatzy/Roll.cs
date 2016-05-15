@@ -30,6 +30,17 @@ namespace Yatzy
             Array.Copy(dice, _dice, 6);
         }
 
+        public Roll(Roll roll)
+        {
+            _dice = new byte[6];
+            Array.Copy(roll.Dice, _dice, 6);
+        }
+
+        public int[] IndexOfDiceWithValue(int eyes)
+        {
+            return Enumerable.Range(0, _dice.Length).Where(index => _dice[index] == eyes).ToArray();
+        }
+
         public override string ToString()
         {
             return string.Join(" ", _dice);

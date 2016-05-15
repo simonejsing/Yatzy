@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,18 +11,20 @@ namespace Yatzy
 
         static void Main(string[] args)
         {
+            var dieRoller = new RandomDieRoller();
             int success = 0;
-            var game = YatzyGameEngine.GetInstance();
 
             for (int i = 0; i < Attempts; i++)
             {
+                var game = YatzyGameEngine.GetInstance(dieRoller, new DefaultObjectives().Objectives);
+
                 var roll = game.RollDice();
                 Console.WriteLine(roll);
 
                 for (int j = 0; j < 2; j++)
                 {
-                    var indexOfDiceWithOneEye = GetValue(roll, 1);
-                    roll = game.Reroll(indexOfDiceWithOneEye);
+                    var hold = HoldStrategy(roll);
+                    roll = game.Reroll(hold);
                     Console.WriteLine(roll);
                 }
 
@@ -38,9 +39,9 @@ namespace Yatzy
             Console.WriteLine("Success rate: {0}%", (success/(double)Attempts)*100);
         }
 
-        private static int[] GetValue(Roll roll, int eyes)
+        private static int[] HoldStrategy(Roll roll)
         {
-            return Enumerable.Range(0, roll.Dice.Length).Where(index => roll.Dice[index] == eyes).ToArray();
+            return roll.IndexOfDiceWithValue(1);
         }
     }
 }

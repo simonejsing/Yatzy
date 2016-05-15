@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -102,6 +103,22 @@ namespace Yatzy.UnitTests
         }
 
         [TestMethod]
+        public void CannotModifyRollBeforeScoring()
+        {
+            byte[] expectedDieValue = { 1, 1, 1, 1, 1, 1 };
+
+            // This objective just sums the eyes
+            var game = CreateCustomInstance(expectedDieValue, new MockObjective(r => r.Dice.Sum(d => d)));
+            var roll = game.RollDice();
+
+            // Attempt to cheat by modifying a die before scoring
+            roll.Dice[0] = 2;
+
+            // Check that we still score the original roll
+            game.Score(0).Should().Be(6);
+        }
+
+        [TestMethod]
         public void YatzyGameEngineCanRerollAgainAfterANewRoll()
         {
             byte[] expectedDieValue = { 1, 2, 3, 4, 5, 6 };
@@ -162,6 +179,20 @@ namespace Yatzy.UnitTests
             var points = game.Score(0);
 
             points.Should().Be(expectedPoints);
+        }
+
+        [TestMethod]
+        public void YatzyGameEngineCanScoreEachObjectiveOnlyOnce()
+        {
+            byte[] expectedDieValue = { 1, 2, 3, 4, 5, 6 };
+
+            var game = CreateDefaultInstance(expectedDieValue);
+            game.RollDice();
+            game.Score(0);
+            game.RollDice();
+            Action action = () => game.Score(0);
+
+            action.ShouldThrow<InvalidOperationException>();
         }
     }
 }
