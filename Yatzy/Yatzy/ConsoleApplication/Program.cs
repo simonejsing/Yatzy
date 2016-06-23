@@ -11,7 +11,11 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
-            var network = new NeuralNetwork(1);
+            var network = new NeuralNetwork(1, 1, 1);
+
+            var outputs = network.Compute(new [] { 0.0 });
+
+            Console.WriteLine("Outputs: {0}", string.Join(",", outputs));
         }
     }
 }
