@@ -2,7 +2,7 @@
 
 namespace Yatzy
 {
-    internal class RandomDieRoller : IDiceRoller
+    public class RandomDieRoller : IDiceRoller
     {
         private const int Seed = 1;
         private const int BufferSize = 100;

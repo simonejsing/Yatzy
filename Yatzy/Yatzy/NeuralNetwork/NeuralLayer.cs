@@ -2,14 +2,16 @@
 
 namespace MachineLearning
 {
-    internal class NeuralLayer
+    public class NeuralLayer
     {
+        private static Random random = new Random();
+
         public int Size { get; }
         public int NumberOfInputs { get; }
         public double Bias { get; }
+        public double[] InputWeights { get; }
 
         private readonly double[] nodes;
-        private readonly double[] inputWeights;
 
         public NeuralLayer(int numberOfNeurons, int numberOfInputs, double bias)
         {
@@ -18,7 +20,7 @@ namespace MachineLearning
             Bias = bias;
 
             nodes = new double[Size];
-            inputWeights = new double[Size * NumberOfInputs];
+            InputWeights = new double[Size * NumberOfInputs];
 
             for (int i = 0; i < Size; i++)
             {
@@ -27,14 +29,14 @@ namespace MachineLearning
 
             for (int i = 0; i < Size * NumberOfInputs; i++)
             {
-                inputWeights[i] = 0.0;
+                InputWeights[i] = random.NextDouble();
             }
         }
 
         public NeuralLayer(NeuralLayer layer) : this(layer.Size, layer.NumberOfInputs, layer.Bias)
         {
             Array.Copy(layer.nodes, nodes, Size);
-            Array.Copy(layer.inputWeights, inputWeights, Size * NumberOfInputs);
+            Array.Copy(layer.InputWeights, InputWeights, Size * NumberOfInputs);
         }
 
         public double[] Compute(double[] inputs)
@@ -51,7 +53,7 @@ namespace MachineLearning
 
                 for (int j = 0; j < NumberOfInputs; j++)
                 {
-                    weightedInput += inputs[j]*inputWeights[i*NumberOfInputs + j];
+                    weightedInput += inputs[j]*InputWeights[i*NumberOfInputs + j];
                 }
 
                 nodes[i] = ActivationFunction(weightedInput);
