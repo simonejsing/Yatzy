@@ -6,17 +6,17 @@ namespace MachineLearning
     {
         public int Size { get; }
         public int NumberOfInputs { get; }
+        public double Bias { get; }
 
-        private readonly double bias;
         private readonly double[] nodes;
         private readonly double[] inputWeights;
 
-        public NeuralLayer(int numberOfNeurons, int numberOfInputs)
+        public NeuralLayer(int numberOfNeurons, int numberOfInputs, double bias)
         {
             Size = numberOfNeurons;
             NumberOfInputs = numberOfInputs;
+            Bias = bias;
 
-            bias = 0.0;
             nodes = new double[Size];
             inputWeights = new double[Size * NumberOfInputs];
 
@@ -31,10 +31,8 @@ namespace MachineLearning
             }
         }
 
-        public NeuralLayer(NeuralLayer layer) : this(layer.Size, layer.NumberOfInputs)
+        public NeuralLayer(NeuralLayer layer) : this(layer.Size, layer.NumberOfInputs, layer.Bias)
         {
-            bias = layer.bias;
-
             Array.Copy(layer.nodes, nodes, Size);
             Array.Copy(layer.inputWeights, inputWeights, Size * NumberOfInputs);
         }
@@ -49,7 +47,7 @@ namespace MachineLearning
         {
             for (int i = 0; i < Size; i++)
             {
-                double weightedInput = bias;
+                double weightedInput = Bias;
 
                 for (int j = 0; j < NumberOfInputs; j++)
                 {

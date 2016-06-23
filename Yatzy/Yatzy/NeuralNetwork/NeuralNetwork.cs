@@ -23,7 +23,8 @@ namespace MachineLearning
 
         public NeuralNetwork(int numberOfLayers, int numberOfInputs, int numberOfOutputs)
         {
-            var hiddenLayerSize = 2;
+            const int hiddenLayerSize = 2;
+            const double hiddenLayerBias = 0.0;
 
             NumberOfHiddenLayers = numberOfLayers;
             NumberOfInputs = numberOfInputs;
@@ -32,10 +33,10 @@ namespace MachineLearning
             hiddenLayers = new NeuralLayer[numberOfLayers];
             for (int i = 0; i < numberOfLayers; i++)
             {
-                hiddenLayers[i] = new NeuralLayer(hiddenLayerSize, numberOfInputs);
+                hiddenLayers[i] = new NeuralLayer(hiddenLayerSize, numberOfInputs, hiddenLayerBias);
             }
 
-            outputLayer = new NeuralLayer(numberOfOutputs, hiddenLayerSize);
+            outputLayer = new NeuralLayer(numberOfOutputs, hiddenLayerSize, 0.0);
         }
 
         public double[] Compute(double[] inputs)
