@@ -58,14 +58,15 @@ namespace MachineLearning
             }
         }
 
+        // Use Sigmoid for now since it is bounded between 0 and 1 which is helpful when we need to make a binary decission
         private static double ActivationFunction(double input)
         {
-            return Math.Max(0.0, input);
+            return 1.0/(1.0 + Math.Exp(-input));
         }
 
-        private static double DerivedActivationFunction(double input)
+        /*private static double DerivedActivationFunction(double input)
         {
             return input < 0.0 ? 0 : 1;
-        }
+        }*/
     }
 }

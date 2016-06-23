@@ -33,7 +33,9 @@ namespace MachineLearning
             hiddenLayers = new NeuralLayer[numberOfLayers];
             for (int i = 0; i < numberOfLayers; i++)
             {
-                hiddenLayers[i] = new NeuralLayer(hiddenLayerSize, numberOfInputs, hiddenLayerBias);
+                // First layer has number of inputs equal to number of inputs to the network, consecutive layers will inherit from previous layer's size
+                var inputs = i == 0 ? numberOfInputs : hiddenLayers[i-1].Size;
+                hiddenLayers[i] = new NeuralLayer(hiddenLayerSize, inputs, hiddenLayerBias);
             }
 
             outputLayer = new NeuralLayer(numberOfOutputs, hiddenLayerSize, 0.0);
