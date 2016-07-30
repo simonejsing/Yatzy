@@ -30,11 +30,17 @@ namespace ConsoleApplication
             {
                 var problem = PlayUprightProblem(player, Iterations);
                 scores[i] = problem.Score;
-                //Console.WriteLine("Final score: {0}", problem.Score);
+                Console.WriteLine("Final score: {0}", problem.Score);
             }
 
-            double averageScore = scores.Sum()/NumberOfGames;
-            Console.WriteLine("Average score: {0}", averageScore);
+            double averageScore = scores.Sum() / NumberOfGames;
+            double stdDev = Math.Sqrt(scores.Select(s => Sqr(Math.Abs(s - averageScore))).Sum() / NumberOfGames);
+            Console.WriteLine("Average score: {0} +/- {1}", averageScore, stdDev);
+        }
+
+        private static double Sqr(double value)
+        {
+            return value * value;
         }
 
         private static UprightProblem PlayUprightProblem(IPlayer player, int iterations)

@@ -17,8 +17,8 @@ namespace ConsoleApplication
     /// </summary>
     class UprightProblem : IMachineLearningProblem
     {
-        private const double GravitationalForce = 0.1;
-        private const double MaxRandomForce = 0.5;
+        private const double GravitationalForce = 0.5;
+        private const double MaxRandomForce = 0.15;
         private const double MaximumPlayerInputForce = 0.1;
 
         private static readonly Random random = new Random();
@@ -28,6 +28,11 @@ namespace ConsoleApplication
 
         public double[] Parameters => new [] { PoleAngle };
 
+        public UprightProblem()
+        {
+            PoleAngle = 0.1;
+        }
+
         public void Update(double[] inputs)
         {
             if (PoleFallenOver(PoleAngle))
@@ -35,15 +40,17 @@ namespace ConsoleApplication
 
             Score += 1.0;
 
-            var randomForce = RandomForce(PoleAngle);
-            PoleAngle += randomForce;
+            var adjustment = 0.0;
+            adjustment += RandomForce(PoleAngle);
 
             // Apply input forces
-            PoleAngle += InputForce(inputs[0], -1);
-            PoleAngle += InputForce(inputs[1], 1);
+            adjustment += InputForce(inputs[0], -1);
+            adjustment += InputForce(inputs[1], 1);
 
             // Apply gravity to pole
-            PoleAngle += TangentialForce(PoleAngle, GravitationalForce);
+            adjustment += TangentialForce(PoleAngle, GravitationalForce);
+
+            PoleAngle += adjustment;
         }
 
         private bool PoleFallenOver(double angle)
