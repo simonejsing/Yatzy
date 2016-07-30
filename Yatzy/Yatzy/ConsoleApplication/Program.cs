@@ -12,6 +12,46 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
+            RunPoleTrainer();
+            //RunYatzyTrainer();
+        }
+
+        private static void RunPoleTrainer()
+        {
+            const int NumberOfGames = 100;
+            const int Iterations = 100;
+
+            double[] scores = new double[NumberOfGames];
+
+            var player = new HumanPlayer();
+            //var player = new NeuralNetworkPlayer();
+
+            for (int i = 0; i < NumberOfGames; i++)
+            {
+                var problem = PlayUprightProblem(player, Iterations);
+                scores[i] = problem.Score;
+                //Console.WriteLine("Final score: {0}", problem.Score);
+            }
+
+            double averageScore = scores.Sum()/NumberOfGames;
+            Console.WriteLine("Average score: {0}", averageScore);
+        }
+
+        private static UprightProblem PlayUprightProblem(IPlayer player, int iterations)
+        {
+            var problem = new UprightProblem();
+
+            for (int i = 0; i < iterations; i++)
+            {
+                //Console.WriteLine("Angle: {0}", problem.PoleAngle);
+                problem.Update(player.Respond(problem));
+            }
+
+            return problem;
+        }
+
+        /*private static void RunYatzyTrainer()
+        {
             var dieRoller = new RandomDieRoller();
             var network = new NeuralNetwork(2, 3, 1, 1);
 
@@ -21,7 +61,7 @@ namespace ConsoleApplication
 
             for (int i = 0; i < Iterations; i++)
             {
-                var inputs = new[] { NormalizeDieValue(dieRoller.RollDie()) };
+                var inputs = new[] {NormalizeDieValue(dieRoller.RollDie())};
                 //var inputs = new[] { 0.0 };
 
                 //var score0 = ScoreFunc(network, inputs);
@@ -68,6 +108,6 @@ namespace ConsoleApplication
         private static double NormalizeDieValue(byte die)
         {
             return (die - 1.0)/5.0;
-        }
+        }*/
     }
 }
