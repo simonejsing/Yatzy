@@ -67,6 +67,7 @@
     <Compile Include="MockObjective.cs" />
     <Compile Include="ObjectiveTests.cs" />
     <Compile Include="ScoreCardTests.cs" />
+    <Compile Include="ActivationTests.cs" />
     <Compile Include="YatzyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -74,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yatzy\NeuralNetwork\MachineLearning.csproj">
+      <Project>{da234fd8-6a27-4ade-ba99-b23289c0cbbf}</Project>
+      <Name>MachineLearning</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yatzy\PortableYatzy\PortableYatzy.csproj">
       <Project>{adfb30ad-72fa-411c-8136-3745d5e56380}</Project>
       <Name>PortableYatzy</Name>

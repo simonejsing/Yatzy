@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DGMLWriter.cs" />
+    <Compile Include="DummyPlayer.cs" />
     <Compile Include="HumanPlayer.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="NeuralNetworkPlayer.cs" />

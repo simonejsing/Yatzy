@@ -1,19 +1,38 @@
-﻿using MachineLearning;
+﻿using System;
+using MachineLearning;
 
 namespace ConsoleApplication
 {
     internal class NeuralNetworkPlayer : IPlayer
     {
-        private readonly NeuralNetwork network;
+        public NeuralNetwork Network { get; }
 
-        public NeuralNetworkPlayer()
+        public NeuralNetworkPlayer(NeuralNetwork network)
         {
-            network = new NeuralNetwork(1, 2, 1, 2);
+            Network = network;
         }
 
         public double[] Respond(IMachineLearningProblem problem)
         {
-            return network.Compute(problem.Parameters);
+            double[] inputs = new double[1];
+            inputs[0] = NormalizeParameter(problem.Parameters[0]);
+
+            double[] response = Network.Compute(inputs);
+            return response;
+        }
+
+        private static double NormalizeParameter(double parameter)
+        {
+            // This value is the angle of the pole, it goes from -PI/2 to PI/2
+            // we need to map this to [0,1]
+            var normalizedParameter = (parameter + Math.PI/2) / Math.PI;
+
+            return BoundParameter(normalizedParameter);
+        }
+
+        private static double BoundParameter(double normalizedParameter)
+        {
+            return Math.Min(1.0, Math.Abs(normalizedParameter));
         }
     }
-}
+} 

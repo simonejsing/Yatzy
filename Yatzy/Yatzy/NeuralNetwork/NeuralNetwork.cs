@@ -11,23 +11,30 @@ namespace MachineLearning
         public int NumberOfOutputs { get; }
         public int TotalWeights => Layers.Sum(l => l.InputWeights.Length);
 
+        public double[] InputLayer { get; }
         public NeuralLayer[] HiddenLayers { get; }
         public NeuralLayer OutputLayer { get; }
         public IEnumerable<NeuralLayer> Layers => HiddenLayers.Concat(new [] { OutputLayer });
 
-        public NeuralNetwork(NeuralNetwork network) : this(network.NumberOfHiddenLayers, 2, network.NumberOfInputs, network.NumberOfOutputs)
+        public NeuralNetwork(NeuralNetwork network) : this(network.NumberOfHiddenLayers, 1, network.NumberOfInputs, network.NumberOfOutputs)
         {
             for (int i = 0; i < NumberOfHiddenLayers; i++)
             {
                 HiddenLayers[i] = new NeuralLayer(network.HiddenLayers[i]);
             }
 
+            InputLayer = new double[network.NumberOfInputs];
+            for (int i = 0; i < network.NumberOfInputs; i++)
+            {
+                InputLayer[i] = network.InputLayer[i];
+            }
             OutputLayer = new NeuralLayer(network.OutputLayer);
         }
 
         public NeuralNetwork(int numberOfLayers, int hiddenLayerSize, int numberOfInputs, int numberOfOutputs)
         {
-            const double hiddenLayerBias = 1.0;
+            const double hiddenLayerBias = 0.0;
+            //const double hiddenLayerBias = 0.5;
 
             NumberOfHiddenLayers = numberOfLayers;
             NumberOfInputs = numberOfInputs;
@@ -41,6 +48,11 @@ namespace MachineLearning
                 HiddenLayers[i] = new NeuralLayer(hiddenLayerSize, layerInputs, hiddenLayerBias);
             }
 
+            InputLayer = new double[numberOfInputs];
+            for (int i = 0; i < numberOfInputs; i++)
+            {
+                InputLayer[i] = 0.0;
+            }
             OutputLayer = new NeuralLayer(numberOfOutputs, hiddenLayerSize, 0.0);
         }
 
@@ -49,6 +61,11 @@ namespace MachineLearning
             if (inputs.Length != NumberOfInputs)
             {
                 throw new InvalidOperationException("Incorrect number of inputs provided.");
+            }
+
+            for (int i = 0; i < NumberOfInputs; i++)
+            {
+                InputLayer[i] = inputs[i];
             }
 
             var currentInputs = inputs;

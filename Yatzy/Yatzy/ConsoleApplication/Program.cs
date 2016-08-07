@@ -23,8 +23,12 @@ namespace ConsoleApplication
 
             double[] scores = new double[NumberOfGames];
 
-            var player = new HumanPlayer();
-            //var player = new NeuralNetworkPlayer();
+            //var player = new DummyPlayer(); // Scores an average of about 11
+            //var player = new HumanPlayer(); // Scores an average of about 63
+            var player = TrainNeuralNetworkPlayer();
+
+            // Save the network
+            SaveNeuralNetworkAsDGML(player.Network, "network.dgml");
 
             for (int i = 0; i < NumberOfGames; i++)
             {
@@ -36,6 +40,75 @@ namespace ConsoleApplication
             double averageScore = scores.Sum() / NumberOfGames;
             double stdDev = Math.Sqrt(scores.Select(s => Sqr(Math.Abs(s - averageScore))).Sum() / NumberOfGames);
             Console.WriteLine("Average score: {0} +/- {1}", averageScore, stdDev);
+        }
+
+        private static void SaveNeuralNetworkAsDGML(NeuralNetwork network, string path)
+        {
+            int layerIndex = 0;
+            DGMLWriter writer = new DGMLWriter();
+            int nodeIndex = 0;
+            foreach (var input in network.InputLayer)
+            {
+                var nodeId = string.Format("L{0}N{1}", 0, nodeIndex);
+                var nodeLabel = string.Format("{0}: {1}", nodeId, input);
+                writer.AddNode(new DGMLWriter.Node(nodeId, nodeLabel));
+                nodeIndex++;
+            }
+
+            foreach (var layer in network.Layers)
+            {
+                layerIndex++;
+                nodeIndex = 0;
+                foreach (var node in layer.Nodes)
+                {
+                    var nodeId = string.Format("L{0}N{1}", layerIndex, nodeIndex);
+                    var nodeLabel = string.Format("{0}: {1}", nodeId, node);
+                    writer.AddNode(new DGMLWriter.Node(nodeId, nodeLabel));
+                    nodeIndex++;
+                }
+
+                var weightIndex = 0;
+                foreach (var input in layer.InputWeights)
+                {
+                    var sourceLayer = layerIndex - 1;
+                    var sourceNode = string.Format("L{0}N{1}", sourceLayer, weightIndex % layer.NumberOfInputs);
+                    var targetNode = string.Format("L{0}N{1}", layerIndex, weightIndex / layer.NumberOfInputs);
+                    var linkLabel = string.Format("{0}", input);
+                    writer.AddLink(new DGMLWriter.Link(sourceNode, targetNode, linkLabel));
+                    weightIndex++;
+                }
+            }
+
+            writer.Serialize(path);
+        }
+
+        private static NeuralNetworkPlayer TrainNeuralNetworkPlayer()
+        {
+            const int TrainingIterations = 100;
+            const int NumberOfGames = 100;
+            const int Iterations = 20;
+
+            var network = new NeuralNetwork(2, 2, 1, 2);
+            var trainer = new NeuralNetworkTrainer(network, (newNetwork, inputs) =>
+            {
+                var player = new NeuralNetworkPlayer(newNetwork);
+                var sumScore = 0.0;
+                for (int i = 0; i < NumberOfGames; i++)
+                {
+                    var problem = PlayUprightProblem(player, Iterations);
+                    sumScore += problem.Score;
+                }
+
+                return sumScore/NumberOfGames;
+            });
+
+            // Train the neural network
+            for (int j = 0; j < TrainingIterations; j++)
+            {
+                var bestScore = trainer.Iterate(new double[0]);
+                Console.WriteLine("Current score: {0}", bestScore);
+            }
+            return new NeuralNetworkPlayer(trainer.Network);
         }
 
         private static double Sqr(double value)

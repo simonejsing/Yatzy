@@ -18,9 +18,6 @@ namespace ConsoleApplication
 
         public double[] Respond(IMachineLearningProblem problem)
         {
-            // Doing nothing clocks in a score of ~23
-            //return new[] {0.0, 0.0};
-
             var angle = problem.Parameters[0];
             return new[]
             {

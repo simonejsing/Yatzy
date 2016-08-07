@@ -6,30 +6,43 @@ namespace MachineLearning
 {
     public class NeuralNetworkTrainer
     {
-        private NeuralNetwork network;
-        private Func<NeuralNetwork, double[], double> scoreFunc;
+        private readonly Func<NeuralNetwork, double[], double> scoreFunc;
+
+        public NeuralNetwork Network { get; private set; }
 
         public NeuralNetworkTrainer(NeuralNetwork network, Func<NeuralNetwork, double[], double> scoreFunc)
         {
-            this.network = network;
+            this.Network = network;
             this.scoreFunc = scoreFunc;
         }
 
-        public void Iterate(double[] inputs)
+        public double Iterate(double[] inputs)
         {
-            const double delta = 0.05;
-            var score0 = scoreFunc(network, inputs);
+            const double delta = 0.1;
+            var score0 = scoreFunc(Network, inputs);
+
+            // Let's just generate a new random network and pick the best one
+            var newNetwork = new NeuralNetwork(2, 2, 1, 2);
+            var score1 = scoreFunc(newNetwork, inputs);
+
+            if (score1 > score0)
+            {
+                Network = newNetwork;
+            }
+
+            return Math.Max(score0, score1);
 
             // Compute derivatives with respect to weights in the network
-            var totalWeights = network.TotalWeights;
+            var totalWeights = Network.TotalWeights;
             NeuralNetwork[] permutedNetworks = new NeuralNetwork[totalWeights];
             double[] derivatives = new double[totalWeights];
             double maximum = 0.0;
+            double maxScore = score0;
             int maximizer = 0;
 
             for (int i = 0; i < totalWeights; i++)
             {
-                permutedNetworks[i] = new NeuralNetwork(network);
+                permutedNetworks[i] = new NeuralNetwork(Network);
 
                 // Permute the i'th weight
                 PermuteNetworkIndex(permutedNetworks[i], i, delta);
@@ -40,6 +53,7 @@ namespace MachineLearning
 
                 if (Math.Abs(derivatives[i]) > maximum)
                 {
+                    maxScore = score;
                     maximum = Math.Abs(derivatives[i]);
                     maximizer = i;
                 }
@@ -47,7 +61,8 @@ namespace MachineLearning
 
             // Step along the steepest derivative
             var step = derivatives[maximizer] > 0.0 ? delta : -delta;
-            PermuteNetworkIndex(network, maximizer, step);
+            PermuteNetworkIndex(Network, maximizer, step);
+            return maxScore;
         }
 
         private static void PermuteNetworkIndex(NeuralNetwork network, int i, double delta)

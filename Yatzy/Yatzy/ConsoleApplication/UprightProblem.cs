@@ -30,7 +30,6 @@ namespace ConsoleApplication
 
         public UprightProblem()
         {
-            PoleAngle = 0.1;
         }
 
         public void Update(double[] inputs)
