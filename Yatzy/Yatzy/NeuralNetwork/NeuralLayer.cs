@@ -29,7 +29,7 @@ namespace MachineLearning
 
             for (int i = 0; i < Size * NumberOfInputs; i++)
             {
-                InputWeights[i] = random.NextDouble();
+                InputWeights[i] = (random.NextDouble() - 0.5) * 10.0;
             }
         }
 
@@ -63,7 +63,8 @@ namespace MachineLearning
         // Use Sigmoid for now since it is bounded between 0 and 1 which is helpful when we need to make a binary decission
         public static double ActivationFunction(double input)
         {
-            return RectifiedLinear(input);
+            //return input;
+            //return RectifiedLinear(input);
             return Sigmoid(input);
         }
 

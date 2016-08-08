@@ -12,6 +12,10 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
+            /*var network = new NeuralNetwork(4, 4, 1, 2);
+            network.Compute(new[] { Math.PI / 4 });
+            SaveNeuralNetworkAsDGML(network, "network.dgml");*/
+
             RunPoleTrainer();
             //RunYatzyTrainer();
         }
@@ -28,18 +32,32 @@ namespace ConsoleApplication
             var player = TrainNeuralNetworkPlayer();
 
             // Save the network
-            SaveNeuralNetworkAsDGML(player.Network, "network.dgml");
+            var network = new NeuralNetwork(player.Network);
+            network.Compute(new[] {Math.PI/4});
+            SaveNeuralNetworkAsDGML(network, "network.dgml");
+
+            // Test some examples
+            WriteNetworkResponse(network, 0.0);
+            WriteNetworkResponse(network, Math.PI / 4);
+            WriteNetworkResponse(network, -Math.PI / 4);
 
             for (int i = 0; i < NumberOfGames; i++)
             {
                 var problem = PlayUprightProblem(player, Iterations);
                 scores[i] = problem.Score;
-                Console.WriteLine("Final score: {0}", problem.Score);
+                //Console.WriteLine("Final score: {0}", problem.Score);
             }
 
             double averageScore = scores.Sum() / NumberOfGames;
             double stdDev = Math.Sqrt(scores.Select(s => Sqr(Math.Abs(s - averageScore))).Sum() / NumberOfGames);
             Console.WriteLine("Average score: {0} +/- {1}", averageScore, stdDev);
+        }
+
+        private static void WriteNetworkResponse(NeuralNetwork network, double input)
+        {
+            var input1 = new[] {input};
+            var output1 = network.Compute(input1);
+            Console.WriteLine("Input: {0}, Output: {1}, {2}", input1[0], output1[0], output1[1]);
         }
 
         private static void SaveNeuralNetworkAsDGML(NeuralNetwork network, string path)
@@ -50,8 +68,8 @@ namespace ConsoleApplication
             foreach (var input in network.InputLayer)
             {
                 var nodeId = string.Format("L{0}N{1}", 0, nodeIndex);
-                var nodeLabel = string.Format("{0}: {1}", nodeId, input);
-                writer.AddNode(new DGMLWriter.Node(nodeId, nodeLabel));
+                var nodeLabel = string.Format("Input: {0:0.0000}", input);
+                writer.AddNode(new DGMLWriter.Node(nodeId, nodeLabel, GridBounds(layerIndex, nodeIndex)));
                 nodeIndex++;
             }
 
@@ -62,8 +80,8 @@ namespace ConsoleApplication
                 foreach (var node in layer.Nodes)
                 {
                     var nodeId = string.Format("L{0}N{1}", layerIndex, nodeIndex);
-                    var nodeLabel = string.Format("{0}: {1}", nodeId, node);
-                    writer.AddNode(new DGMLWriter.Node(nodeId, nodeLabel));
+                    var nodeLabel = string.Format("{0}: {1:0.0000}", nodeId, node);
+                    writer.AddNode(new DGMLWriter.Node(nodeId, nodeLabel, GridBounds(layerIndex, nodeIndex)));
                     nodeIndex++;
                 }
 
@@ -73,7 +91,7 @@ namespace ConsoleApplication
                     var sourceLayer = layerIndex - 1;
                     var sourceNode = string.Format("L{0}N{1}", sourceLayer, weightIndex % layer.NumberOfInputs);
                     var targetNode = string.Format("L{0}N{1}", layerIndex, weightIndex / layer.NumberOfInputs);
-                    var linkLabel = string.Format("{0}", input);
+                    var linkLabel = string.Format("{0:0.0000}", input);
                     writer.AddLink(new DGMLWriter.Link(sourceNode, targetNode, linkLabel));
                     weightIndex++;
                 }
@@ -82,13 +100,25 @@ namespace ConsoleApplication
             writer.Serialize(path);
         }
 
+        private const double GridColumnWidth = 300.0;
+        private const double GridRowHeight = 200.0;
+
+        private static string GridBounds(int column, int row)
+        {
+            double x = column * GridColumnWidth;
+            double y = row * GridRowHeight;
+            double width = 160.0;
+            double height = 25.96;
+            return string.Format(@"{0},{1},{2},{3}", x, y, width, height);
+        }
+
         private static NeuralNetworkPlayer TrainNeuralNetworkPlayer()
         {
-            const int TrainingIterations = 100;
+            const int TrainingIterations = 1000;
             const int NumberOfGames = 100;
-            const int Iterations = 20;
+            const int Iterations = 100;
 
-            var network = new NeuralNetwork(2, 2, 1, 2);
+            var network = new NeuralNetwork(4, 4, 1, 2);
             var trainer = new NeuralNetworkTrainer(network, (newNetwork, inputs) =>
             {
                 var player = new NeuralNetworkPlayer(newNetwork);

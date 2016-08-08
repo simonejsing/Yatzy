@@ -22,7 +22,7 @@ namespace MachineLearning
             var score0 = scoreFunc(Network, inputs);
 
             // Let's just generate a new random network and pick the best one
-            var newNetwork = new NeuralNetwork(2, 2, 1, 2);
+            /*var newNetwork = new NeuralNetwork(4, 4, 1, 2);
             var score1 = scoreFunc(newNetwork, inputs);
 
             if (score1 > score0)
@@ -30,7 +30,7 @@ namespace MachineLearning
                 Network = newNetwork;
             }
 
-            return Math.Max(score0, score1);
+            return Math.Max(score0, score1);*/
 
             // Compute derivatives with respect to weights in the network
             var totalWeights = Network.TotalWeights;

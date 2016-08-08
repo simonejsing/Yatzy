@@ -15,9 +15,20 @@ namespace ConsoleApplication
         public double[] Respond(IMachineLearningProblem problem)
         {
             double[] inputs = new double[1];
-            inputs[0] = NormalizeParameter(problem.Parameters[0]);
+            //inputs[0] = NormalizeParameter(problem.Parameters[0]);
+            inputs[0] = problem.Parameters[0];
 
             double[] response = Network.Compute(inputs);
+
+            if (response[0] > response[1])
+            {
+                response[1] = 0.0;
+            }
+            else
+            {
+                response[0] = 0.0;
+            }
+
             return response;
         }
 

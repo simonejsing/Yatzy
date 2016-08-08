@@ -18,11 +18,17 @@ namespace ConsoleApplication
             public string Id;
             [XmlAttribute]
             public string Label;
+            [XmlAttribute]
+            public string Bounds;
+            [XmlAttribute]
+            public bool UseManualLocation;
 
-            public Node(string id, string label)
+            public Node(string id, string label, string bounds)
             {
                 this.Id = id;
                 this.Label = label;
+                this.Bounds = bounds;
+                this.UseManualLocation = true;
             }
         }
 
