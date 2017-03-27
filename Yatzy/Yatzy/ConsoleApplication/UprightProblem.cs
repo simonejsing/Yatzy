@@ -44,8 +44,7 @@ namespace ConsoleApplication
             adjustment += RandomForce(PoleAngle);
 
             // Apply input forces
-            adjustment += InputForce(inputs[0], -1);
-            adjustment += InputForce(inputs[1], 1);
+            adjustment += EvaluatePlayerAction(inputs);
 
             // Apply gravity to pole
             adjustment += TangentialForce(PoleAngle, GravitationalForce);
@@ -69,7 +68,12 @@ namespace ConsoleApplication
             return Math.Sin(angle)*force;
         }
 
-        private double InputForce(double input, double sign)
+        public static double EvaluatePlayerAction(double[] inputs)
+        {
+            return InputForce(inputs[0], -1) + InputForce(inputs[1], 1);
+        }
+
+        private static double InputForce(double input, double sign)
         {
             var boundedInput = Math.Min(1.0, Math.Abs(input));
             return sign*boundedInput*MaximumPlayerInputForce;

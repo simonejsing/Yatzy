@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,13 +19,16 @@ namespace ConsoleApplication
             SaveNeuralNetworkAsDGML(network, "network.dgml");*/
 
             var network = LoadNeuralNetwork(@"..\..\network90.dgml");
-            SaveNeuralNetworkAsDGML(network, @"..\..\temp.dgml");
 
-            //RunPoleTrainer();
+            //var player = TrainNeuralNetworkPlayer();
+            var player = new NeuralNetworkPlayer(network);
+            RunPoleTrainer(player);
             //RunYatzyTrainer();
+
+            AnalyzeNetworkResponse(player.Network, @"..\..\analysis.csv");
         }
 
-        private static void RunPoleTrainer()
+        private static void RunPoleTrainer(NeuralNetworkPlayer player)
         {
             const int NumberOfGames = 100;
             const int Iterations = 100;
@@ -33,7 +37,6 @@ namespace ConsoleApplication
 
             //var player = new DummyPlayer(); // Scores an average of about 11
             //var player = new HumanPlayer(); // Scores an average of about 63
-            var player = TrainNeuralNetworkPlayer();
 
             // Save the network
             var network = new NeuralNetwork(player.Network);
@@ -62,6 +65,30 @@ namespace ConsoleApplication
             var input1 = new[] {input};
             var output1 = network.Compute(input1);
             Console.WriteLine("Input: {0}, Output: {1}, {2}", input1[0], output1[0], output1[1]);
+        }
+
+        private static void AnalyzeNetworkResponse(NeuralNetwork network, string filePath)
+        {
+            // Compute the response of the network over the given interval
+            var start = -1.0;
+            var end = 1.0;
+            var delta = 0.01;
+
+            var samples = (end - start)/delta;
+
+            using (var stream = File.Create(filePath))
+            {
+                using (var writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine("Input,Output");
+                    for (int i = 0; i <= samples; i++)
+                    {
+                        var input = start + delta * i;
+                        var response = network.Compute(new[] { input });
+                        writer.WriteLine("{0},{1}", input, UprightProblem.EvaluatePlayerAction(response));
+                    }
+                }
+            }
         }
 
         private static NeuralNetwork LoadNeuralNetwork(string filePath)
