@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="L0N0" Label="Input: 0.7854" Bounds="0,0,160,25.96" UseManualLocation="True" />
+    <Node Id="L1N0" Label="L1N0: 0.9433" Bounds="300,0,160,25.96" UseManualLocation="True" />
+    <Node Id="L1N1" Label="L1N1: 0.6984" Bounds="300,200,160,25.96" UseManualLocation="True" />
+    <Node Id="L1N2" Label="L1N2: 0.0476" Bounds="300,400,160,25.96" UseManualLocation="True" />
+    <Node Id="L1N3" Label="L1N3: 0.9601" Bounds="300,600,160,25.96" UseManualLocation="True" />
+    <Node Id="L2N0" Label="L2N0: 0.0036" Bounds="600,0,160,25.96" UseManualLocation="True" />
+    <Node Id="L2N1" Label="L2N1: 0.5971" Bounds="600,200,160,25.96" UseManualLocation="True" />
+    <Node Id="L2N2" Label="L2N2: 0.0610" Bounds="600,400,160,25.96" UseManualLocation="True" />
+    <Node Id="L2N3" Label="L2N3: 0.0023" Bounds="600,600,160,25.96" UseManualLocation="True" />
+    <Node Id="L3N0" Label="L3N0: 0.2931" Bounds="900,0,160,25.96" UseManualLocation="True" />
+    <Node Id="L3N1" Label="L3N1: 0.6913" Bounds="900,200,160,25.96" UseManualLocation="True" />
+    <Node Id="L3N2" Label="L3N2: 0.9081" Bounds="900,400,160,25.96" UseManualLocation="True" />
+    <Node Id="L3N3" Label="L3N3: 0.9202" Bounds="900,600,160,25.96" UseManualLocation="True" />
+    <Node Id="L4N0" Label="L4N0: 0.0234" Bounds="1200,0,160,25.96" UseManualLocation="True" />
+    <Node Id="L4N1" Label="L4N1: 0.0012" Bounds="1200,200,160,25.96" UseManualLocation="True" />
+    <Node Id="L4N2" Label="L4N2: 0.0406" Bounds="1200,400,160,25.96" UseManualLocation="True" />
+    <Node Id="L4N3" Label="L4N3: 0.9926" Bounds="1200,600,160,25.96" UseManualLocation="True" />
+    <Node Id="L5N0" Label="L5N0: 0.7474" Bounds="1500,0,160,25.96" UseManualLocation="True" />
+    <Node Id="L5N1" Label="L5N1: 0.2329" Bounds="1500,200,160,25.96" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="L0N0" Target="L1N0" Label="3.5798" />
+    <Link Source="L0N0" Target="L1N1" Label="1.0693" />
+    <Link Source="L0N0" Target="L1N2" Label="-3.8160" />
+    <Link Source="L0N0" Target="L1N3" Label="4.0502" />
+    <Link Source="L1N0" Target="L2N0" Label="-5.1555" />
+    <Link Source="L1N1" Target="L2N0" Label="0.3827" />
+    <Link Source="L1N2" Target="L2N0" Label="5.0121" />
+    <Link Source="L1N3" Target="L2N0" Label="-1.3066" />
+    <Link Source="L1N0" Target="L2N1" Label="-2.7317" />
+    <Link Source="L1N1" Target="L2N1" Label="-3.1773" />
+    <Link Source="L1N2" Target="L2N1" Label="-2.4835" />
+    <Link Source="L1N3" Target="L2N1" Label="5.5280" />
+    <Link Source="L1N0" Target="L2N2" Label="-2.8242" />
+    <Link Source="L1N1" Target="L2N2" Label="0.8166" />
+    <Link Source="L1N2" Target="L2N2" Label="-0.8355" />
+    <Link Source="L1N3" Target="L2N2" Label="-0.6260" />
+    <Link Source="L1N0" Target="L2N3" Label="-5.1555" />
+    <Link Source="L1N1" Target="L2N3" Label="3.3426" />
+    <Link Source="L1N2" Target="L2N3" Label="2.4531" />
+    <Link Source="L1N3" Target="L2N3" Label="-3.8162" />
+    <Link Source="L2N0" Target="L3N0" Label="-2.4346" />
+    <Link Source="L2N1" Target="L3N0" Label="-1.2938" />
+    <Link Source="L2N2" Target="L3N0" Label="-1.5333" />
+    <Link Source="L2N3" Target="L3N0" Label="-2.4370" />
+    <Link Source="L2N0" Target="L3N1" Label="-1.9189" />
+    <Link Source="L2N1" Target="L3N1" Label="1.6148" />
+    <Link Source="L2N2" Target="L3N1" Label="-2.3373" />
+    <Link Source="L2N3" Target="L3N1" Label="-3.7467" />
+    <Link Source="L2N0" Target="L3N2" Label="-0.2296" />
+    <Link Source="L2N1" Target="L3N2" Label="4.3600" />
+    <Link Source="L2N2" Target="L3N2" Label="-4.9481" />
+    <Link Source="L2N3" Target="L3N2" Label="-4.5441" />
+    <Link Source="L2N0" Target="L3N3" Label="1.8993" />
+    <Link Source="L2N1" Target="L3N3" Label="4.4339" />
+    <Link Source="L2N2" Target="L3N3" Label="-3.4499" />
+    <Link Source="L2N3" Target="L3N3" Label="0.4440" />
+    <Link Source="L3N0" Target="L4N0" Label="1.6901" />
+    <Link Source="L3N1" Target="L4N0" Label="-0.7237" />
+    <Link Source="L3N2" Target="L4N0" Label="-3.3463" />
+    <Link Source="L3N3" Target="L4N0" Label="-0.7490" />
+    <Link Source="L3N0" Target="L4N1" Label="-4.0767" />
+    <Link Source="L3N1" Target="L4N1" Label="-4.0639" />
+    <Link Source="L3N2" Target="L4N1" Label="-4.5921" />
+    <Link Source="L3N3" Target="L4N1" Label="1.5705" />
+    <Link Source="L3N0" Target="L4N2" Label="4.7628" />
+    <Link Source="L3N1" Target="L4N2" Label="1.9101" />
+    <Link Source="L3N2" Target="L4N2" Label="-2.5468" />
+    <Link Source="L3N3" Target="L4N2" Label="-3.8744" />
+    <Link Source="L3N0" Target="L4N3" Label="3.8855" />
+    <Link Source="L3N1" Target="L4N3" Label="3.1414" />
+    <Link Source="L3N2" Target="L4N3" Label="1.7136" />
+    <Link Source="L3N3" Target="L4N3" Label="0.0358" />
+    <Link Source="L4N0" Target="L5N0" Label="-2.0515" />
+    <Link Source="L4N1" Target="L5N0" Label="-3.0526" />
+    <Link Source="L4N2" Target="L5N0" Label="1.7414" />
+    <Link Source="L4N3" Target="L5N0" Label="1.0735" />
+    <Link Source="L4N0" Target="L5N1" Label="-1.6975" />
+    <Link Source="L4N1" Target="L5N1" Label="5.6210" />
+    <Link Source="L4N2" Target="L5N1" Label="0.0691" />
+    <Link Source="L4N3" Target="L5N1" Label="-1.1703" />
+  </Links>
+</DirectedGraph>

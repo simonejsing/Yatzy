@@ -6,7 +6,7 @@ namespace MachineLearning
 {
     public class NeuralNetwork
     {
-        public int NumberOfHiddenLayers { get; }
+        public int NumberOfHiddenHiddenLayers { get; }
         public int NumberOfInputs { get; }
         public int NumberOfOutputs { get; }
         public int TotalWeights => Layers.Sum(l => l.InputWeights.Length);
@@ -16,9 +16,9 @@ namespace MachineLearning
         public NeuralLayer OutputLayer { get; }
         public IEnumerable<NeuralLayer> Layers => HiddenLayers.Concat(new [] { OutputLayer });
 
-        public NeuralNetwork(NeuralNetwork network) : this(network.NumberOfHiddenLayers, 1, network.NumberOfInputs, network.NumberOfOutputs)
+        public NeuralNetwork(NeuralNetwork network) : this(network.NumberOfHiddenHiddenLayers, 1, network.NumberOfInputs, network.NumberOfOutputs)
         {
-            for (int i = 0; i < NumberOfHiddenLayers; i++)
+            for (int i = 0; i < NumberOfHiddenHiddenLayers; i++)
             {
                 HiddenLayers[i] = new NeuralLayer(network.HiddenLayers[i]);
             }
@@ -31,17 +31,17 @@ namespace MachineLearning
             OutputLayer = new NeuralLayer(network.OutputLayer);
         }
 
-        public NeuralNetwork(int numberOfLayers, int hiddenLayerSize, int numberOfInputs, int numberOfOutputs)
+        public NeuralNetwork(int numberOfHiddenLayers, int hiddenLayerSize, int numberOfInputs, int numberOfOutputs)
         {
             const double hiddenLayerBias = 0.0;
             //const double hiddenLayerBias = 0.5;
 
-            NumberOfHiddenLayers = numberOfLayers;
+            NumberOfHiddenHiddenLayers = numberOfHiddenLayers;
             NumberOfInputs = numberOfInputs;
             NumberOfOutputs = numberOfOutputs;
 
-            HiddenLayers = new NeuralLayer[numberOfLayers];
-            for (int i = 0; i < numberOfLayers; i++)
+            HiddenLayers = new NeuralLayer[numberOfHiddenLayers];
+            for (int i = 0; i < numberOfHiddenLayers; i++)
             {
                 // First layer has number of inputs equal to number of inputs to the network, consecutive layers will inherit from previous layer's size
                 var layerInputs = i == 0 ? numberOfInputs : HiddenLayers[i-1].Size;
@@ -70,7 +70,7 @@ namespace MachineLearning
 
             var currentInputs = inputs;
 
-            for (int i = 0; i < NumberOfHiddenLayers; i++)
+            for (int i = 0; i < NumberOfHiddenHiddenLayers; i++)
             {
                 currentInputs = HiddenLayers[i].Compute(currentInputs);
             }

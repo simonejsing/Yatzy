@@ -6,7 +6,7 @@ namespace ConsoleApplication
 {
     public class DGMLWriter
     {
-        public struct Graph
+        public class Graph
         {
             public Node[] Nodes;
             public Link[] Links;
@@ -21,14 +21,14 @@ namespace ConsoleApplication
             [XmlAttribute]
             public string Bounds;
             [XmlAttribute]
-            public bool UseManualLocation;
+            public string UseManualLocation;
 
             public Node(string id, string label, string bounds)
             {
                 this.Id = id;
                 this.Label = label;
                 this.Bounds = bounds;
-                this.UseManualLocation = true;
+                this.UseManualLocation = "True";
             }
         }
 
@@ -81,6 +81,16 @@ namespace ConsoleApplication
             settings.Indent = true;
             XmlWriter xmlWriter = XmlWriter.Create(xmlpath, settings);
             serializer.Serialize(xmlWriter, g);
+        }
+
+        public Graph Deserialize(string xmlpath)
+        {
+            XmlRootAttribute root = new XmlRootAttribute("DirectedGraph");
+            root.Namespace = "http://schemas.microsoft.com/vs/2009/dgml";
+            XmlSerializer serializer = new XmlSerializer(typeof(Graph), root);
+            XmlReaderSettings settings = new XmlReaderSettings();
+            XmlReader xmlReader = XmlReader.Create(xmlpath, settings);
+            return serializer.Deserialize(xmlReader) as Graph;
         }
     }
 }

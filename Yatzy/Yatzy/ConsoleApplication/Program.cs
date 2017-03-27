@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MachineLearning;
 using Yatzy;
@@ -16,7 +17,10 @@ namespace ConsoleApplication
             network.Compute(new[] { Math.PI / 4 });
             SaveNeuralNetworkAsDGML(network, "network.dgml");*/
 
-            RunPoleTrainer();
+            var network = LoadNeuralNetwork(@"..\..\network90.dgml");
+            SaveNeuralNetworkAsDGML(network, @"..\..\temp.dgml");
+
+            //RunPoleTrainer();
             //RunYatzyTrainer();
         }
 
@@ -58,6 +62,133 @@ namespace ConsoleApplication
             var input1 = new[] {input};
             var output1 = network.Compute(input1);
             Console.WriteLine("Input: {0}, Output: {1}, {2}", input1[0], output1[0], output1[1]);
+        }
+
+        private static NeuralNetwork LoadNeuralNetwork(string filePath)
+        {
+            DGMLWriter writer = new DGMLWriter();
+            var graph = writer.Deserialize(filePath);
+
+            var inputLayerSize = 0;
+            var outputLayerSize = 0;
+            var numberOfLayers = 0;
+            var hiddenLayerSize = 0;
+
+            // Determine depth of neural network
+            foreach (var node in graph.Nodes)
+            {
+                // Parse node structure
+                var match = MatchNodeId(node.Id);
+                if (!match.Success)
+                    continue;
+
+                var layerIndex = int.Parse(match.Groups[1].Value);
+                numberOfLayers = Math.Max(numberOfLayers, layerIndex);
+            }
+
+            // Determine structure of neural network
+            foreach (var node in graph.Nodes)
+            {
+                // Parse node structure
+                var match = MatchNodeId(node.Id);
+                if (!match.Success)
+                    continue;
+
+                var layerIndex = int.Parse(match.Groups[1].Value);
+                var nodeIndex = int.Parse(match.Groups[2].Value);
+
+                if (layerIndex == 0)
+                {
+                    // Input layer
+                    inputLayerSize = Math.Max(inputLayerSize, nodeIndex + 1);
+                }
+                else if (layerIndex == numberOfLayers)
+                {
+                    // Output layer
+                    outputLayerSize = Math.Max(outputLayerSize, nodeIndex + 1);
+                }
+                else
+                {
+                    hiddenLayerSize = Math.Max(hiddenLayerSize, nodeIndex + 1);
+                }
+            }
+
+            var numberOfHiddenLayers = numberOfLayers - 1;
+            var network = new NeuralNetwork(numberOfHiddenLayers, hiddenLayerSize, inputLayerSize, outputLayerSize);
+
+            // Restore network node values
+            foreach (var node in graph.Nodes)
+            {
+                // Parse node structure
+                var match = MatchNodeId(node.Id);
+                if (!match.Success)
+                    continue;
+
+                var layerIndex = int.Parse(match.Groups[1].Value);
+                var nodeIndex = int.Parse(match.Groups[2].Value);
+
+                // Parse node value
+                var valueMatch = Regex.Match(node.Label, ".+: (.+)");
+                if (!valueMatch.Success)
+                    throw new Exception(string.Format("Could not parse value for node at [{0},{1}]", layerIndex, nodeIndex));
+                var value = double.Parse(valueMatch.Groups[1].Value);
+
+                if (layerIndex == 0)
+                {
+                    // Input layer
+                    network.InputLayer[nodeIndex] = value;
+                }
+                else if (layerIndex == numberOfLayers)
+                {
+                    // Output layer
+                    network.OutputLayer.Nodes[nodeIndex] = value;
+                }
+                else
+                {
+                    network.HiddenLayers[layerIndex-1].Nodes[nodeIndex] = value;
+                }
+            }
+
+            // Restore network edge values
+            foreach (var link in graph.Links)
+            {
+                var sourceMatch = MatchNodeId(link.Source);
+                var targetMatch = MatchNodeId(link.Target);
+                if(!sourceMatch.Success || !targetMatch.Success)
+                    continue;
+
+                //var sourceLayerIndex = int.Parse(sourceMatch.Groups[1].Value);
+                var sourceNodeIndex = int.Parse(sourceMatch.Groups[2].Value);
+                var targetLayerIndex = int.Parse(targetMatch.Groups[1].Value);
+                var targetNodeIndex = int.Parse(targetMatch.Groups[2].Value);
+
+                // Parse edge value
+                var value = double.Parse(link.Label);
+
+                if (targetLayerIndex == 0)
+                {
+                    throw new Exception("Invalid edge weight targeting input layer.");
+                }
+                else if (targetLayerIndex == numberOfLayers)
+                {
+                    network.OutputLayer.InputWeights[targetNodeIndex * hiddenLayerSize + sourceNodeIndex] = value;
+                }
+                else if (targetLayerIndex == 1)
+                {
+                    network.HiddenLayers[targetLayerIndex - 1].InputWeights[targetNodeIndex * inputLayerSize + sourceNodeIndex] = value;
+                }
+                else
+                {
+                    network.HiddenLayers[targetLayerIndex-1].InputWeights[targetNodeIndex * hiddenLayerSize + sourceNodeIndex] = value;
+                }
+            }
+
+            return network;
+        }
+
+        private static Match MatchNodeId(string input)
+        {
+            return Regex.Match(input, "L(\\d+)N(\\d+)", RegexOptions.None);
         }
 
         private static void SaveNeuralNetworkAsDGML(NeuralNetwork network, string path)
